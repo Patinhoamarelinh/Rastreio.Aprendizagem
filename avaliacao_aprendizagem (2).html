@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rastreio de Dificuldades de Aprendizagem – Prof. Gabriel Sirino</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --ink2: #3d3d5c;
+    --ink3: #7a7a9a;
+    --paper: #faf9f6;
+    --paper2: #f2f0ea;
+    --paper3: #e8e4d9;
+    --line: #d8d4c8;
+    --green: #2d7a4f;
+    --green-l: #e8f5ee;
+    --blue: #1a5fa8;
+    --blue-l: #e6f0fb;
+    --amber: #b06a00;
+    --amber-l: #fef3e2;
+    --red: #c0392b;
+    --red-l: #fdecea;
+    --purple: #6a3d9a;
+    --purple-l: #f3eeff;
+    --teal: #0d7377;
+    --teal-l: #e6f7f8;
+    --gold: #d4a017;
+    --gold-l: #fdf8e1;
+    --accent: #e84855;
+    --radius: 10px;
+    --shadow: 0 2px 12px rgba(26,26,46,0.08);
+    --shadow-lg: 0 8px 32px rgba(26,26,46,0.14);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .site-header {
+    background: var(--ink);
+    color: #fff;
+    padding: 0;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 24px;
+  }
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-size: 20px; font-weight: 700; letter-spacing: -0.5px;
+  }
+  .logo span { color: #f5c842; }
+  .header-sub { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-btn {
+    background: transparent; color: rgba(255,255,255,0.7);
+    border: none; padding: 7px 14px; border-radius: 6px;
+    font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+  .nav-btn.active { background: rgba(255,255,255,0.15); color: #fff; font-weight: 500; }
+
+  /* LAYOUT */
+  .main-layout {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 240px 1fr;
+    gap: 0; min-height: calc(100vh - 57px);
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    background: var(--paper2);
+    border-right: 1px solid var(--line);
+    padding: 20px 0;
+    position: sticky; top: 57px; height: calc(100vh - 57px);
+    overflow-y: auto;
+  }
+  .sidebar-section { margin-bottom: 8px; }
+  .sidebar-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--ink3);
+    padding: 8px 20px 4px;
+  }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 20px; cursor: pointer;
+    font-size: 13px; color: var(--ink2);
+    border-left: 3px solid transparent;
+    transition: all 0.12s;
+  }
+  .sidebar-item:hover { background: var(--paper3); color: var(--ink); }
+  .sidebar-item.active {
+    background: #fff; color: var(--ink);
+    border-left-color: var(--accent); font-weight: 500;
+  }
+  .sidebar-icon { width: 20px; text-align: center; font-size: 14px; }
+  .sidebar-badge {
+    margin-left: auto; font-size: 10px; font-weight: 600;
+    background: var(--line); color: var(--ink3);
+    padding: 2px 6px; border-radius: 20px;
+  }
+  .sidebar-item.active .sidebar-badge { background: var(--accent); color: white; }
+
+  /* CONTENT */
+  .content { padding: 28px; overflow-y: auto; }
+
+  /* PAGES */
+  .page { display: none; animation: fadeIn 0.2s ease; }
+  .page.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* PAGE HEADER */
+  .page-header { margin-bottom: 24px; }
+  .page-title {
+    font-family: 'Fraunces', serif;
+    font-size: 26px; font-weight: 700; color: var(--ink);
+    line-height: 1.2; margin-bottom: 6px;
+  }
+  .page-desc { font-size: 14px; color: var(--ink3); line-height: 1.6; max-width: 600px; }
+
+  /* CARDS GRID */
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 28px; }
+  .card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative; overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); border-color: var(--line); }
+  .card-year { font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 8px; }
+  .card-title { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+  .card-meta { font-size: 12px; color: var(--ink3); display: flex; gap: 12px; flex-wrap: wrap; }
+  .card-meta span { display: flex; align-items: center; gap: 4px; }
+  .card-btn {
+    margin-top: 14px; width: 100%;
+    padding: 8px; border-radius: 7px;
+    border: 1px solid var(--line); background: var(--paper2);
+    font-size: 13px; font-weight: 500; cursor: pointer; color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.12s;
+  }
+  .card-btn:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  /* COLOR VARIANTS */
+  .c-green::before { background: var(--green); }
+  .c-green .card-year { color: var(--green); }
+  .c-blue::before { background: var(--blue); }
+  .c-blue .card-year { color: var(--blue); }
+  .c-amber::before { background: var(--amber); }
+  .c-amber .card-year { color: var(--amber); }
+  .c-red::before { background: var(--red); }
+  .c-red .card-year { color: var(--red); }
+  .c-purple::before { background: var(--purple); }
+  .c-purple .card-year { color: var(--purple); }
+  .c-teal::before { background: var(--teal); }
+  .c-teal .card-year { color: var(--teal); }
+
+  /* STAT CARDS */
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+  .stat-card {
+    background: #fff; border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 14px 16px;
+  }
+  .stat-label { font-size: 11px; color: var(--ink3); margin-bottom: 4px; }
+  .stat-val { font-size: 26px; font-weight: 700; font-family: 'Fraunces', serif; }
+  .stat-sub { font-size: 11px; color: var(--ink3); margin-top: 2px; }
+
+  /* TEST PAGE */
+  .test-header {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
+    padding-bottom: 18px; border-bottom: 1px solid var(--line);
+  }
+  .back-btn {
+    background: var(--paper2); border: 1px solid var(--line);
+    padding: 7px 14px; border-radius: 7px;
+    font-size: 13px; cursor: pointer; color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .back-btn:hover { background: var(--paper3); }
+  .test-title { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 700; }
+  .test-sub { font-size: 13px; color: var(--ink3); }
+
+  .student-info-bar {
+    background: var(--blue-l);
+    border: 1px solid #b5d4f4;
+    border-radius: var(--radius); padding: 12px 16px;
+    margin-bottom: 20px;
+    display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+  }
+  .student-field { display: flex; flex-direction: column; }
+  .student-field label { font-size: 11px; color: var(--blue); font-weight: 600; margin-bottom: 3px; }
+  .student-field input {
+    border: 1px solid #b5d4f4; background: white;
+    border-radius: 6px; padding: 6px 10px;
+    font-size: 13px; font-family: 'DM Sans', sans-serif;
+    color: var(--ink); min-width: 160px;
+  }
+  .student-field input:focus { outline: none; border-color: var(--blue); }
+
+  .section-block {
+    background: #fff; border: 1px solid var(--line);
+    border-radius: var(--radius); margin-bottom: 16px; overflow: hidden;
+  }
+  .section-block-header {
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid var(--line);
+    font-weight: 600; font-size: 14px;
+  }
+  .section-icon { font-size: 16px; }
+  .section-block-body { padding: 16px; }
+
+  .word-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .word-tag {
+    background: var(--paper2); border: 1px solid var(--line);
+    padding: 6px 14px; border-radius: 20px; font-size: 14px; font-weight: 500;
+  }
+
+  .comp-text {
+    background: var(--gold-l); border: 1px solid #f0d060;
+    border-radius: 8px; padding: 12px 16px;
+    font-style: italic; font-size: 15px; color: var(--ink2);
+    margin-bottom: 12px; font-family: 'Fraunces', serif;
+    line-height: 1.7;
+  }
+
+  .question-item { margin-bottom: 10px; }
+  .question-label { font-size: 13px; color: var(--ink2); margin-bottom: 6px; font-weight: 500; }
+  .q-input {
+    width: 100%; border: 1px solid var(--line); border-radius: 7px;
+    padding: 8px 12px; font-size: 13px; font-family: 'DM Sans', sans-serif;
+    background: var(--paper2); color: var(--ink);
+    transition: border-color 0.12s;
+  }
+  .q-input:focus { outline: none; border-color: var(--blue); background: white; }
+  .q-textarea { min-height: 80px; resize: vertical; }
+
+  /* CRITERIA RADIOS */
+  .criteria-group { margin-bottom: 12px; }
+  .criteria-label { font-size: 12px; font-weight: 600; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .radio-opts { display: flex; flex-wrap: wrap; gap: 6px; }
+  .radio-opt { position: relative; }
+  .radio-opt input { position: absolute; opacity: 0; }
+  .radio-opt label {
+    display: block; padding: 6px 12px;
+    border: 1px solid var(--line); border-radius: 20px;
+    font-size: 12px; cursor: pointer; color: var(--ink2);
+    transition: all 0.12s; white-space: nowrap;
+  }
+  .radio-opt input:checked + label {
+    background: var(--ink); color: white; border-color: var(--ink);
+  }
+
+  /* SCORE DISPLAY */
+  .score-panel {
+    background: linear-gradient(135deg, var(--ink) 0%, #2d2d4a 100%);
+    color: white; border-radius: var(--radius);
+    padding: 24px; margin-top: 24px;
+  }
+  .score-title { font-family: 'Fraunces', serif; font-size: 20px; margin-bottom: 16px; }
+  .score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+  .score-item { background: rgba(255,255,255,0.1); border-radius: 8px; padding: 12px; text-align: center; }
+  .score-num { font-size: 28px; font-weight: 700; font-family: 'Fraunces', serif; }
+  .score-nm { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 3px; }
+  .score-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .score-bar-name { font-size: 12px; width: 130px; color: rgba(255,255,255,0.8); }
+  .score-bar-bg { flex: 1; height: 8px; background: rgba(255,255,255,0.15); border-radius: 4px; overflow: hidden; }
+  .score-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+  .score-pct { font-size: 12px; font-weight: 600; width: 36px; text-align: right; }
+  .score-alert {
+    border-radius: 8px; padding: 12px 14px;
+    font-size: 13px; margin-top: 14px; line-height: 1.6;
+  }
+  .score-alert.green { background: rgba(45,122,79,0.3); color: #7de8a8; }
+  .score-alert.amber { background: rgba(176,106,0,0.3); color: #ffd77a; }
+  .score-alert.red { background: rgba(192,57,43,0.4); color: #ffb3ad; }
+
+  .btn-calc {
+    width: 100%; padding: 13px;
+    background: var(--accent); color: white; border: none;
+    border-radius: var(--radius); font-size: 15px; font-weight: 600;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    margin-top: 20px; transition: background 0.15s;
+  }
+  .btn-calc:hover { background: #c73541; }
+
+  /* SUGGESTIONS PAGE */
+  .suggestion-card {
+    background: #fff; border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 18px;
+    margin-bottom: 12px;
+  }
+  .sug-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .sug-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.8px;
+    text-transform: uppercase; padding: 3px 8px; border-radius: 4px;
+  }
+  .sug-title { font-size: 15px; font-weight: 600; }
+  .sug-desc { font-size: 13px; color: var(--ink2); line-height: 1.6; margin-bottom: 10px; }
+  .sug-items { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .sug-items li { font-size: 13px; color: var(--ink2); padding-left: 16px; position: relative; }
+  .sug-items li::before { content: '→'; position: absolute; left: 0; color: var(--ink3); font-size: 11px; top: 2px; }
+
+  /* TEACHER PANEL */
+  .teacher-form-card {
+    background: #fff; border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 20px;
+    margin-bottom: 20px;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .form-group { margin-bottom: 12px; }
+  .form-label { font-size: 12px; font-weight: 600; color: var(--ink3); margin-bottom: 4px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
+  .form-input, .form-select, .form-textarea {
+    width: 100%; font-family: 'DM Sans', sans-serif; font-size: 13px;
+    border: 1px solid var(--line); border-radius: 7px;
+    padding: 8px 12px; background: var(--paper2); color: var(--ink);
+    transition: border-color 0.12s;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    outline: none; border-color: var(--blue); background: white;
+  }
+  .form-textarea { min-height: 80px; resize: vertical; }
+  .btn-add {
+    background: var(--green); color: white; border: none;
+    padding: 10px 20px; border-radius: 7px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: background 0.12s;
+  }
+  .btn-add:hover { background: var(--green); filter: brightness(0.9); }
+
+  .custom-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 12px 14px;
+    background: var(--paper2); border: 1px solid var(--line);
+    border-radius: 8px; margin-bottom: 8px;
+  }
+  .ci-body { flex: 1; }
+  .ci-meta { font-size: 11px; color: var(--ink3); margin-bottom: 4px; }
+  .ci-text { font-size: 13px; color: var(--ink); }
+  .ci-del {
+    background: none; border: none; color: var(--ink3); cursor: pointer;
+    font-size: 16px; padding: 2px 6px; border-radius: 4px;
+    transition: all 0.12s;
+  }
+  .ci-del:hover { background: var(--red-l); color: var(--red); }
+
+  /* PRINT */
+  .btn-print {
+    background: var(--paper2); border: 1px solid var(--line);
+    padding: 9px 18px; border-radius: 7px;
+    font-size: 13px; cursor: pointer; color: var(--ink);
+    font-family: 'DM Sans', sans-serif; margin-left: auto;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .btn-print:hover { background: var(--paper3); }
+  .top-actions { display: flex; margin-bottom: 16px; }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--line); margin: 20px 0; }
+
+  /* RESPONSIVE */
+  @media (max-width: 700px) {
+    .main-layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .score-grid { grid-template-columns: 1fr 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    .site-header, .sidebar, .nav-links, .back-btn, .btn-calc, .btn-print { display: none !important; }
+    .main-layout { grid-template-columns: 1fr; }
+    .page { display: block !important; }
+    .content { padding: 0; }
+  }
+
+  .tag-green { background: var(--green-l); color: var(--green); }
+  .tag-blue { background: var(--blue-l); color: var(--blue); }
+  .tag-amber { background: var(--amber-l); color: var(--amber); }
+  .tag-red { background: var(--red-l); color: var(--red); }
+  .tag-purple { background: var(--purple-l); color: var(--purple); }
+  .tag-teal { background: var(--teal-l); color: var(--teal); }
+
+  .empty-state { text-align: center; padding: 2rem; color: var(--ink3); font-size: 13px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 500;
+  }
+  .section-h2 { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 600; margin-bottom: 14px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div>
+      <div class="logo">Rastreio<span>.</span>Aprendizagem</div>
+      <div class="header-sub">Prof. Gabriel Sirino · Ensino Fundamental I</div>
+    </div>
+    <nav class="nav-links">
+      <button class="nav-btn active" onclick="showPage('home')">Início</button>
+      <button class="nav-btn" onclick="showPage('sugestoes')">Sugestões</button>
+      <button class="nav-btn" onclick="showPage('professor')">Painel do Professor</button>
+      <button class="nav-btn" onclick="showPage('resultados')">Resultados</button>
+    </nav>
+  </div>
+</header>
+
+<div class="main-layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Testes — Ano letivo</div>
+      <div class="sidebar-item active" onclick="showTestCard('home')" id="sb-home">
+        <span class="sidebar-icon">🏠</span> Início
+      </div>
+      <div class="sidebar-item" onclick="openTest(0)" id="sb-0">
+        <span class="sidebar-icon">📘</span> 1º Ano
+        <span class="sidebar-badge">6</span>
+      </div>
+      <div class="sidebar-item" onclick="openTest(1)" id="sb-1">
+        <span class="sidebar-icon">📗</span> 2º Ano
+        <span class="sidebar-badge">6</span>
+      </div>
+      <div class="sidebar-item" onclick="openTest(2)" id="sb-2">
+        <span class="sidebar-icon">📙</span> 3º Ano
+        <span class="sidebar-badge">6</span>
+      </div>
+      <div class="sidebar-item" onclick="openTest(3)" id="sb-3">
+        <span class="sidebar-icon">📕</span> 4º Ano
+        <span class="sidebar-badge">6</span>
+      </div>
+      <div class="sidebar-item" onclick="openTest(4)" id="sb-4">
+        <span class="sidebar-icon">📒</span> 5º Ano
+        <span class="sidebar-badge">6</span>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Outros testes</div>
+      <div class="sidebar-item" onclick="openTest(5)" id="sb-5">
+        <span class="sidebar-icon">🧠</span> Atenção/Memória
+        <span class="sidebar-badge">5</span>
+      </div>
+      <div class="sidebar-item" onclick="openTest(6)" id="sb-6">
+        <span class="sidebar-icon">🎨</span> Coordenação Motora
+        <span class="sidebar-badge">5</span>
+      </div>
+      <div class="sidebar-item" onclick="openTest(7)" id="sb-7">
+        <span class="sidebar-icon">💬</span> Linguagem Oral
+        <span class="sidebar-badge">5</span>
+      </div>
+      <div class="sidebar-item" onclick="openTest(8)" id="sb-8">
+        <span class="sidebar-icon">🔢</span> Dislexia/Discalculia
+        <span class="sidebar-badge">8</span>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Gestão</div>
+      <div class="sidebar-item" onclick="showPage('professor')">
+        <span class="sidebar-icon">✏️</span> Meus Testes
+      </div>
+      <div class="sidebar-item" onclick="showPage('resultados')">
+        <span class="sidebar-icon">📊</span> Resultados
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="content">
+
+    <!-- HOME PAGE -->
+    <div id="page-home" class="page active">
+      <div class="page-header">
+        <div class="page-title">Plataforma de Rastreio de Dificuldades de Aprendizagem</div>
+        <div class="page-desc">Testes padronizados para Ensino Fundamental I, incluindo avaliação de leitura, escrita, compreensão e matemática por ano escolar. Score automático e painel do professor incluídos.</div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Testes disponíveis</div>
+          <div class="stat-val" style="color:var(--blue)">9</div>
+          <div class="stat-sub">5 anos + 4 extras</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Domínios avaliados</div>
+          <div class="stat-val" style="color:var(--green)">6</div>
+          <div class="stat-sub">por série</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Score automático</div>
+          <div class="stat-val" style="color:var(--purple)">✓</div>
+          <div class="stat-sub">Por domínio e geral</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Personalização</div>
+          <div class="stat-val" style="color:var(--amber)">✓</div>
+          <div class="stat-sub">Adicione seus testes</div>
+        </div>
+      </div>
+
+      <div class="section-h2">Testes por Ano Escolar</div>
+      <div class="cards-grid">
+        <div class="card c-green" onclick="openTest(0)">
+          <div class="card-year">📘 1º Ano</div>
+          <div class="card-title">Rastreio Fundamental I</div>
+          <div class="card-meta">
+            <span>📖 Leitura</span><span>✍️ Escrita</span><span>🔢 Matemática</span>
+          </div>
+          <button class="card-btn">Iniciar Avaliação</button>
+        </div>
+        <div class="card c-blue" onclick="openTest(1)">
+          <div class="card-year">📗 2º Ano</div>
+          <div class="card-title">Rastreio Fundamental I</div>
+          <div class="card-meta">
+            <span>📖 Leitura</span><span>✍️ Escrita</span><span>🔢 Matemática</span>
+          </div>
+          <button class="card-btn">Iniciar Avaliação</button>
+        </div>
+        <div class="card c-amber" onclick="openTest(2)">
+          <div class="card-year">📙 3º Ano</div>
+          <div class="card-title">Rastreio Fundamental I</div>
+          <div class="card-meta">
+            <span>📖 Leitura</span><span>✍️ Escrita</span><span>🔢 Matemática</span>
+          </div>
+          <button class="card-btn">Iniciar Avaliação</button>
+        </div>
+        <div class="card c-red" onclick="openTest(3)">
+          <div class="card-year">📕 4º Ano</div>
+          <div class="card-title">Rastreio Fundamental I</div>
+          <div class="card-meta">
+            <span>📖 Leitura</span><span>✍️ Escrita</span><span>🔢 Matemática</span>
+          </div>
+          <button class="card-btn">Iniciar Avaliação</button>
+        </div>
+        <div class="card c-purple" onclick="openTest(4)">
+          <div class="card-year">📒 5º Ano</div>
+          <div class="card-title">Rastreio Fundamental I</div>
+          <div class="card-meta">
+            <span>📖 Leitura</span><span>✍️ Escrita</span><span>🔢 Matemática</span>
+          </div>
+          <button class="card-btn">Iniciar Avaliação</button>
+        </div>
+      </div>
+
+      <div class="section-h2">Testes Complementares</div>
+      <div class="cards-grid">
+        <div class="card c-teal" onclick="openTest(5)">
+          <div class="card-year">🧠 Sugerido</div>
+          <div class="card-title">Atenção e Memória de Trabalho</div>
+          <div class="card-meta"><span>Todos os anos</span><span>5 tarefas</span></div>
+          <button class="card-btn">Iniciar Avaliação</button>
+        </div>
+        <div class="card c-green" onclick="openTest(6)">
+          <div class="card-year">🎨 Sugerido</div>
+          <div class="card-title">Coordenação Visomotora</div>
+          <div class="card-meta"><span>1º ao 3º Ano</span><span>5 tarefas</span></div>
+          <button class="card-btn">Iniciar Avaliação</button>
+        </div>
+        <div class="card c-amber" onclick="openTest(7)">
+          <div class="card-year">💬 Sugerido</div>
+          <div class="card-title">Linguagem Oral e Consciência Fonológica</div>
+          <div class="card-meta"><span>1º ao 3º Ano</span><span>5 tarefas</span></div>
+          <button class="card-btn">Iniciar Avaliação</button>
+        </div>
+        <div class="card c-red" onclick="openTest(8)">
+          <div class="card-year">🔢 Sugerido</div>
+          <div class="card-title">Rastreio de Dislexia e Discalculia</div>
+          <div class="card-meta"><span>3º ao 5º Ano</span><span>8 critérios</span></div>
+          <button class="card-btn">Iniciar Avaliação</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEST PAGE -->
+    <div id="page-test" class="page">
+      <div class="test-header">
+        <button class="back-btn" onclick="showPage('home')">← Voltar</button>
+        <div>
+          <div class="test-title" id="test-title">—</div>
+          <div class="test-sub" id="test-sub">—</div>
+        </div>
+        <button class="btn-print" onclick="window.print()">🖨️ Imprimir</button>
+      </div>
+
+      <div class="student-info-bar">
+        <div class="student-field">
+          <label>Nome do aluno</label>
+          <input type="text" id="student-name" placeholder="Nome completo" />
+        </div>
+        <div class="student-field">
+          <label>Turma / Período</label>
+          <input type="text" id="student-class" placeholder="Ex: 2º A – manhã" />
+        </div>
+        <div class="student-field">
+          <label>Data</label>
+          <input type="date" id="student-date" />
+        </div>
+        <div class="student-field">
+          <label>Avaliador</label>
+          <input type="text" id="student-eval" placeholder="Prof. Gabriel Sirino" />
+        </div>
+      </div>
+
+      <div id="test-sections"></div>
+      <button class="btn-calc" onclick="calcScore()">📊 Calcular Score e Gerar Relatório</button>
+      <div id="score-result"></div>
+    </div>
+
+    <!-- SUGESTÕES PAGE -->
+    <div id="page-sugestoes" class="page">
+      <div class="page-header">
+        <div class="page-title">Sugestões de Testes Complementares</div>
+        <div class="page-desc">Baseado em instrumentos psicopedagógicos validados, estes testes ampliam a triagem e auxiliam no encaminhamento adequado.</div>
+      </div>
+
+      <div class="suggestion-card">
+        <div class="sug-header">
+          <span class="sug-tag tag-teal">Atenção</span>
+          <span class="sug-title">Teste de Atenção Sustentada (TAS Infantil)</span>
+        </div>
+        <div class="sug-desc">Avalia a capacidade da criança de manter o foco em uma tarefa repetitiva por tempo prolongado. Indicado para rastrear TDAH e dificuldades de concentração.</div>
+        <ul class="sug-items">
+          <li>Tarefa de cancelamento de letras (circular todas as letras "A" em uma grade)</li>
+          <li>Tarefa de trilhas numéricas (conectar números em ordem crescente)</li>
+          <li>Tarefa de ditado interrompido com reativação da atenção</li>
+          <li>Score: erros de omissão (não marcou) + comissão (marcou errado)</li>
+        </ul>
+        <button class="card-btn" style="margin-top:12px;" onclick="openTest(5)">Abrir Teste</button>
+      </div>
+
+      <div class="suggestion-card">
+        <div class="sug-header">
+          <span class="sug-tag tag-purple">Fonologia</span>
+          <span class="sug-title">Protocolo de Consciência Fonológica (PCF)</span>
+        </div>
+        <div class="sug-desc">Avalia a capacidade de perceber, segmentar e manipular sons da fala — habilidade preditora da alfabetização. Essencial para rastrear dislexia fonológica.</div>
+        <ul class="sug-items">
+          <li>Rima: "bola e mola rimam?" (reconhecimento de padrão sonoro final)</li>
+          <li>Aliteração: identificar palavras que começam com o mesmo som</li>
+          <li>Segmentação silábica: bater palmas para cada sílaba da palavra</li>
+          <li>Síntese fonêmica: ouvir /b/ /o/ /l/ /a/ e dizer a palavra</li>
+          <li>Inversão silábica: "fala 'bola' ao contrário" → "labo"</li>
+        </ul>
+        <button class="card-btn" style="margin-top:12px;" onclick="openTest(7)">Abrir Teste</button>
+      </div>
+
+      <div class="suggestion-card">
+        <div class="sug-header">
+          <span class="sug-tag tag-amber">Matemática</span>
+          <span class="sug-title">Rastreio de Discalculia – Dyscalculia Screener (adaptado)</span>
+        </div>
+        <div class="sug-desc">Avalia o senso numérico inato (numerosidade), contagem, comparação de magnitudes e fatos aritméticos básicos. Indicado a partir do 2º ano.</div>
+        <ul class="sug-items">
+          <li>Comparação de pontos: qual grupo tem mais? (sem contar)</li>
+          <li>Linha numérica mental: onde fica o número 7 entre 0 e 10?</li>
+          <li>Fatos aritméticos: resposta imediata a 3+4, 5+2, 8-3</li>
+          <li>Transcodificação: escrever "quinze" em algarismo</li>
+        </ul>
+        <button class="card-btn" style="margin-top:12px;" onclick="openTest(8)">Abrir Teste</button>
+      </div>
+
+      <div class="suggestion-card">
+        <div class="sug-header">
+          <span class="sug-tag tag-green">Escrita</span>
+          <span class="sug-title">Análise do Erro Ortográfico (AEO)</span>
+        </div>
+        <div class="sug-desc">Classifica os erros de ditado em categorias linguísticas para diferenciar erros normais do desenvolvimento de padrões indicativos de transtornos.</div>
+        <ul class="sug-items">
+          <li>Omissão de letra: "casa" → "asa"</li>
+          <li>Troca por proximidade sonora: "fada" → "vada"</li>
+          <li>Troca por proximidade visual: "d" ↔ "b", "p" ↔ "q"</li>
+          <li>Inversão: "sol" → "los"</li>
+          <li>Hipossegmentação: "aminha" por "a minha"</li>
+        </ul>
+      </div>
+
+      <div class="suggestion-card">
+        <div class="sug-header">
+          <span class="sug-tag tag-red">Comportamento</span>
+          <span class="sug-title">Checklist de Indicadores de TDAH (DSM-5 adaptado)</span>
+        </div>
+        <div class="sug-desc">Levantamento observacional para uso do professor em sala de aula, baseado nos critérios diagnósticos do DSM-5 para TDAH.</div>
+        <ul class="sug-items">
+          <li>Frequência de distração durante tarefas estruturadas</li>
+          <li>Dificuldade em aguardar a vez ou seguir instruções sequenciais</li>
+          <li>Impulsividade nas respostas (responde antes de ouvir a pergunta)</li>
+          <li>Hiperatividade motora (levanta da cadeira, mexe sem parar)</li>
+          <li>Aplicar em pelo menos dois contextos (sala + recreio)</li>
+        </ul>
+      </div>
+
+      <div class="suggestion-card">
+        <div class="sug-header">
+          <span class="sug-tag tag-blue">Leitura</span>
+          <span class="sug-title">Avaliação da Fluência de Leitura Oral (FLO)</span>
+        </div>
+        <div class="sug-desc">Mede palavras lidas corretamente por minuto (PCM) em texto do nível esperado. É o indicador mais sensível para rastrear dislexia e atrasos de decodificação.</div>
+        <ul class="sug-items">
+          <li>Texto de 100 palavras adequado ao ano do aluno</li>
+          <li>Cronometrar 1 minuto de leitura oral</li>
+          <li>Marcar erros: omissão, substituição, inversão, adição</li>
+          <li>PCM = palavras lidas − erros</li>
+          <li>Referência 2º ano: ≥40 PCM; 3º: ≥65; 4º: ≥90; 5º: ≥110</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PROFESSOR PAGE -->
+    <div id="page-professor" class="page">
+      <div class="page-header">
+        <div class="page-title">Painel do Professor</div>
+        <div class="page-desc">Adicione questões personalizadas a qualquer teste existente. Elas aparecem imediatamente para uso nas avaliações.</div>
+      </div>
+
+      <div class="teacher-form-card">
+        <div class="section-h2">Adicionar nova questão</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Teste de destino</label>
+            <select class="form-select" id="new-test-dest">
+              <option value="0">📘 1º Ano – Fundamental I</option>
+              <option value="1">📗 2º Ano – Fundamental I</option>
+              <option value="2">📙 3º Ano – Fundamental I</option>
+              <option value="3">📕 4º Ano – Fundamental I</option>
+              <option value="4">📒 5º Ano – Fundamental I</option>
+              <option value="5">🧠 Atenção e Memória</option>
+              <option value="6">🎨 Coordenação Visomotora</option>
+              <option value="7">💬 Linguagem Oral</option>
+              <option value="8">🔢 Dislexia/Discalculia</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tipo de questão</label>
+            <select class="form-select" id="new-q-type">
+              <option value="criteria">Critério de avaliação (opções)</option>
+              <option value="text">Resposta livre (texto)</option>
+              <option value="words">Lista de palavras</option>
+              <option value="problem">Problema matemático</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Título / Seção</label>
+          <input class="form-input" id="new-q-section" placeholder="Ex: Leitura Complementar" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Enunciado / Conteúdo</label>
+          <textarea class="form-textarea" id="new-q-content" placeholder="Escreva aqui o enunciado, a lista ou o problema..."></textarea>
+        </div>
+        <div class="form-group" id="opts-group">
+          <label class="form-label">Opções de avaliação (separadas por | )</label>
+          <input class="form-input" id="new-q-opts" placeholder="Fluente | Lenta | Com trocas | Não lê" />
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="btn-add" onclick="addCustomQuestion()">+ Adicionar ao Teste</button>
+          <span id="q-feedback" style="font-size:12px;"></span>
+        </div>
+      </div>
+
+      <div class="section-h2">Questões adicionadas por você</div>
+      <div id="custom-q-list"><div class="empty-state">Nenhuma questão personalizada adicionada ainda.</div></div>
+    </div>
+
+    <!-- RESULTADOS PAGE -->
+    <div id="page-resultados" class="page">
+      <div class="page-header">
+        <div class="page-title">Histórico de Resultados</div>
+        <div class="page-desc">Scores gerados nesta sessão. Para salvar permanentemente, use o botão de imprimir ou copie os dados.</div>
+      </div>
+      <div id="results-list"><div class="empty-state">Nenhum resultado calculado ainda. Realize uma avaliação para ver os dados aqui.</div></div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+
+const TESTS = [
+  {
+    id: 0, title: '1º Ano – Rastreio Fundamental I',
+    sub: 'Avaliação completa de leitura, escrita e matemática', icon: '📘', color: 'var(--green)',
+    sections: [
+      { title: 'Leitura', icon: '🔤', type: 'words', items: ['bola','gato','casa','pão'] },
+      { title: 'Compreensão', icon: '📖', type: 'comp',
+        text: '"O gato subiu no telhado."',
+        questions: ['Quem subiu no telhado?'] },
+      { title: 'Escrita – Ditado', icon: '✍️', type: 'words', items: ['bola','casa','gato'] },
+      { title: 'Produção Escrita', icon: '📝', type: 'text', prompt: 'Desenhe e escreva uma frase sobre o desenho.' },
+      { title: 'Matemática', icon: '🔢', type: 'math', items: ['2 + 1 =','3 + 2 ='] },
+      { title: 'Problema', icon: '🧩', type: 'problem', text: 'Ana tem 2 balas e ganhou 1. Quantas tem?' }
+    ]
+  },
+  {
+    id: 1, title: '2º Ano – Rastreio Fundamental I',
+    sub: 'Avaliação completa de leitura, escrita e matemática', icon: '📗', color: 'var(--blue)',
+    sections: [
+      { title: 'Leitura', icon: '🔤', type: 'words', items: ['escola','janela','amigo','menino'] },
+      { title: 'Compreensão', icon: '📖', type: 'comp',
+        text: '"Lucas foi ao mercado com sua mãe."',
+        questions: ['Onde Lucas foi?'] },
+      { title: 'Escrita – Ditado', icon: '✍️', type: 'words', items: ['escola','amigo','janela'] },
+      { title: 'Produção Escrita', icon: '📝', type: 'text', prompt: 'Escreva 2 frases sobre seu dia.' },
+      { title: 'Matemática', icon: '🔢', type: 'math', items: ['5 + 3 =','8 – 2 ='] },
+      { title: 'Problema', icon: '🧩', type: 'problem', text: 'João tinha 5 figurinhas e ganhou 3. Quantas tem?' }
+    ]
+  },
+  {
+    id: 2, title: '3º Ano – Rastreio Fundamental I',
+    sub: 'Avaliação completa de leitura, escrita e matemática', icon: '📙', color: 'var(--amber)',
+    sections: [
+      { title: 'Leitura', icon: '🔤', type: 'words', items: ['bicicleta','problema','cadeira','menino'] },
+      { title: 'Compreensão', icon: '📖', type: 'comp',
+        text: '"Carla esqueceu seu caderno em casa e ficou preocupada."',
+        questions: ['O que Carla esqueceu?','Por que ficou preocupada?'] },
+      { title: 'Escrita – Ditado', icon: '✍️', type: 'words', items: ['bicicleta','problema','menino'] },
+      { title: 'Produção Escrita', icon: '📝', type: 'text', prompt: 'Escreva um pequeno texto (3 linhas).' },
+      { title: 'Matemática', icon: '🔢', type: 'math', items: ['12 + 7 =','15 – 6 ='] },
+      { title: 'Problema', icon: '🧩', type: 'problem', text: 'Maria tinha 12 reais e gastou 5. Quanto sobrou?' }
+    ]
+  },
+  {
+    id: 3, title: '4º Ano – Rastreio Fundamental I',
+    sub: 'Avaliação completa de leitura, escrita e matemática', icon: '📕', color: 'var(--red)',
+    sections: [
+      { title: 'Leitura', icon: '🔤', type: 'words', items: ['estranho','felicidade','problema','importante'] },
+      { title: 'Compreensão', icon: '📖', type: 'comp',
+        text: '"Pedro estudou bastante e conseguiu um bom resultado."',
+        questions: ['O que Pedro fez?','Qual foi o resultado?'] },
+      { title: 'Escrita – Ditado', icon: '✍️', type: 'words', items: ['felicidade','importante','problema'] },
+      { title: 'Produção Escrita', icon: '📝', type: 'text', prompt: 'Escreva um texto (4–5 linhas) sobre seu dia.' },
+      { title: 'Matemática', icon: '🔢', type: 'math', items: ['23 + 18 =','45 – 19 ='] },
+      { title: 'Problema', icon: '🧩', type: 'problem', text: 'Um ônibus tinha 30 pessoas. Desceram 12. Quantas ficaram?' }
+    ]
+  },
+  {
+    id: 4, title: '5º Ano – Rastreio Fundamental I',
+    sub: 'Avaliação completa de leitura, escrita e matemática', icon: '📒', color: 'var(--purple)',
+    sections: [
+      { title: 'Leitura', icon: '🔤', type: 'words', items: ['responsabilidade','desenvolvimento','tranquilidade','inesperado'] },
+      { title: 'Compreensão', icon: '📖', type: 'comp',
+        text: '"Mesmo nervoso, Pedro conseguiu se concentrar e teve um bom resultado na prova."',
+        questions: ['Por que ele estava nervoso?','O que ajudou no resultado?'] },
+      { title: 'Escrita – Ditado', icon: '✍️', type: 'words', items: ['responsabilidade','desenvolvimento','importante'] },
+      { title: 'Produção Escrita', icon: '📝', type: 'text', prompt: 'Escreva um texto (5–8 linhas). Tema: "Meu dia favorito".' },
+      { title: 'Matemática', icon: '🔢', type: 'math', items: ['34 + 27 =','60 – 25 ='] },
+      { title: 'Problema', icon: '🧩', type: 'problem', text: 'Uma loja tinha 50 produtos. Vendeu 18. Quantos restaram?' }
+    ]
+  },
+  {
+    id: 5, title: 'Atenção e Memória de Trabalho',
+    sub: 'Rastreio de dificuldades de atenção e memória operacional', icon: '🧠', color: 'var(--teal)',
+    sections: [
+      { title: 'Cancelamento de letras', icon: '🔍', type: 'text', prompt: 'Entregar grade com letras. Pedir que circule todas as letras "A". Registrar erros de omissão e comissão.' },
+      { title: 'Sequência de dígitos', icon: '🔢', type: 'text', prompt: 'Falar uma sequência de números e pedir para repetir. 3-1-4 / 7-2-9-5 / 8-3-6-1-2. Registrar o maior span correto.' },
+      { title: 'Trilhas numéricas', icon: '🗺️', type: 'text', prompt: 'Conectar os números de 1 a 15 em ordem crescente. Cronometrar e anotar erros de sequência.' },
+      { title: 'Memória visual', icon: '👁️', type: 'text', prompt: 'Mostrar 6 imagens por 10 segundos. Esconder. Quantas o aluno recorda? Anotar número correto.' },
+      { title: 'Atenção dividida', icon: '🎯', type: 'text', prompt: 'Durante ditado, pedir que bata na mesa cada vez que ouvir a palavra "casa". Contar acertos e erros.' }
+    ]
+  },
+  {
+    id: 6, title: 'Coordenação Visomotora',
+    sub: 'Avaliação da coordenação motora fina e integração visomotora', icon: '🎨', color: 'var(--green)',
+    sections: [
+      { title: 'Cópia de formas geométricas', icon: '🔷', type: 'text', prompt: 'Pedir que copie: círculo, quadrado, triângulo, losango. Avaliar proporção, fechamento e orientação.' },
+      { title: 'Recorte em linha reta', icon: '✂️', type: 'text', prompt: 'Recortar ao longo de uma linha reta impressa. Avaliar controle motor e desvios da linha.' },
+      { title: 'Labirinto simples', icon: '🌀', type: 'text', prompt: 'Percorrer labirinto de nível adequado ao ano. Contar toques na parede e tempo gasto.' },
+      { title: 'Cópia de texto curto', icon: '📋', type: 'text', prompt: 'Copiar 2 frases do quadro. Avaliar legibilidade, alinhamento, espaçamento e pressão do lápis.' },
+      { title: 'Preensão e lateralidade', icon: '✋', type: 'text', prompt: 'Observar pega do lápis (tripé, palmar, etc.) e lateralidade (mão dominante). Registrar sem julgamento.' }
+    ]
+  },
+  {
+    id: 7, title: 'Linguagem Oral e Consciência Fonológica',
+    sub: 'Avaliação de habilidades fonológicas preditoras da alfabetização', icon: '💬', color: 'var(--amber)',
+    sections: [
+      { title: 'Reconhecimento de rima', icon: '🎵', type: 'text', prompt: 'Perguntar: "Bola e mola rimam?" / "Gato e pato rimam?" / "Casa e mesa rimam?". Anotar respostas.' },
+      { title: 'Segmentação silábica', icon: '🎯', type: 'text', prompt: 'Pedir que bata palmas para cada sílaba: "bo-la" / "bi-ci-cle-ta" / "res-pon-sa-bi-li-da-de". Registrar acertos.' },
+      { title: 'Aliteração', icon: '🔊', type: 'text', prompt: 'Quais palavras começam com o mesmo som? "faca, fogo, bola, feijão". Esperar resposta antes de ajudar.' },
+      { title: 'Síntese fonêmica', icon: '🧩', type: 'text', prompt: 'Dizer os sons separados: /b/ - /o/ - /l/ - /a/. Pedir que junte e diga a palavra. Testar 4 palavras.' },
+      { title: 'Nomeação rápida', icon: '⚡', type: 'text', prompt: 'Mostrar sequência de 20 cores/figuras conhecidas. Cronometrar nomeação. Referência 1º ano: ≤ 45s.' }
+    ]
+  },
+  {
+    id: 8, title: 'Rastreio de Dislexia e Discalculia',
+    sub: 'Indicadores específicos para transtornos de leitura e matemática', icon: '🔢', color: 'var(--red)',
+    sections: [
+      { title: 'Fluência de leitura oral', icon: '📖', type: 'text', prompt: 'Texto de 100 palavras adequado ao ano. Cronometrar 1 minuto. PCM = palavras − erros. Ref: 2º≥40 / 3º≥65 / 4º≥90 / 5º≥110.' },
+      { title: 'Confusão de grafemas', icon: '🔡', type: 'text', prompt: 'Ditado de pares: d/b, p/q, u/n, m/n. Registrar cada troca. 3+ trocas = indicador de risco de dislexia.' },
+      { title: 'Decodificação de pseudopalavras', icon: '🧬', type: 'text', prompt: 'Ler palavras sem sentido: "bofela", "tramico", "despluto". Avalia rota fonológica sem apoio lexical.' },
+      { title: 'Comparação de magnitudes', icon: '⚖️', type: 'text', prompt: 'Mostrar pares de pontos (sem contar). Qual grupo tem mais? 5 pares. Ref: < 70% acertos = risco discalculia.' },
+      { title: 'Linha numérica mental', icon: '📏', type: 'text', prompt: 'Linha de 0 a 10 sem números. "Marque onde fica o 3" / "e o 7?" / "e o 5?". Avaliar precisão do posicionamento.' },
+      { title: 'Fatos aritméticos (fluência)', icon: '⚡', type: 'text', prompt: 'Cronometrar resposta a: 3+4, 5+2, 8-3, 4+5, 6-2. > 2s por resposta ou erros = indicador de risco.' },
+      { title: 'Transcodificação numérica', icon: '🔄', type: 'text', prompt: 'Escrever em algarismo: "quinze", "trinta e dois", "cem". Avaliar erros de inversão e omissão.' },
+      { title: 'Score de risco combinado', icon: '📊', type: 'text', prompt: 'Somar indicadores positivos. 0-1: baixo risco. 2-3: risco moderado – encaminhar para avaliação aprofundada. 4+: alto risco – encaminhar para psicólogo/psicopedagogo.' }
+    ]
+  }
+];
+
+// Critérios padrão
+const CRITERIA = [
+  { key: 'leitura', label: 'Leitura', opts: ['Fluente','Lenta / hesitante','Com trocas','Não lê'] },
+  { key: 'compreensao', label: 'Compreensão', opts: ['Adequada','Parcial','Não compreende'] },
+  { key: 'escrita', label: 'Escrita / Ortografia', opts: ['Correta','Trocas / omissões','Muitos erros'] },
+  { key: 'producao', label: 'Produção Textual', opts: ['Clara e organizada','Pouco organizada','Difícil de compreender'] },
+  { key: 'matematica', label: 'Matemática', opts: ['Resolve com autonomia','Usa estratégias simples (dedos)','Erros frequentes','Não resolve'] },
+];
+
+// Score mapping
+const SCORE_MAP = {
+  leitura: { 'Fluente': 3, 'Lenta / hesitante': 2, 'Com trocas': 1, 'Não lê': 0 },
+  compreensao: { 'Adequada': 3, 'Parcial': 2, 'Não compreende': 0 },
+  escrita: { 'Correta': 3, 'Trocas / omissões': 1, 'Muitos erros': 0 },
+  producao: { 'Clara e organizada': 3, 'Pouco organizada': 2, 'Difícil de compreender': 0 },
+  matematica: { 'Resolve com autonomia': 3, 'Usa estratégias simples (dedos)': 2, 'Erros frequentes': 1, 'Não resolve': 0 },
+};
+
+let currentTest = null;
+let customQuestions = [];
+let allResults = [];
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const map = { home: 0, sugestoes: 1, professor: 2, resultados: 3 };
+  const btns = document.querySelectorAll('.nav-btn');
+  if (map[name] !== undefined) btns[map[name]].classList.add('active');
+
+  document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+  if (name === 'home') document.getElementById('sb-home').classList.add('active');
+}
+
+function openTest(idx) {
+  currentTest = idx;
+  const test = TESTS[idx];
+  document.getElementById('test-title').textContent = test.icon + ' ' + test.title;
+  document.getElementById('test-sub').textContent = test.sub;
+  document.getElementById('student-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('score-result').innerHTML = '';
+
+  renderTestSections(test);
+  showPage('test');
+
+  document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+  const sbEl = document.getElementById('sb-' + idx);
+  if (sbEl) sbEl.classList.add('active');
+}
+
+function showTestCard(name) {
+  showPage(name);
+  document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+  document.getElementById('sb-home').classList.add('active');
+}
+
+// ── RENDER TEST ────────────────────────────────────────────────────────────────
+
+function renderTestSections(test) {
+  const container = document.getElementById('test-sections');
+  let html = '';
+
+  // Built-in sections
+  test.sections.forEach((sec, si) => {
+    html += `<div class="section-block">
+      <div class="section-block-header">
+        <span class="section-icon">${sec.icon}</span> ${sec.title}
+      </div>
+      <div class="section-block-body">`;
+
+    if (sec.type === 'words') {
+      html += `<div class="word-list">${sec.items.map(w => `<span class="word-tag">${w}</span>`).join('')}</div>`;
+    }
+    if (sec.type === 'comp') {
+      html += `<div class="comp-text">${sec.text}</div>`;
+      sec.questions.forEach((q, qi) => {
+        html += `<div class="question-item">
+          <div class="question-label">${q}</div>
+          <input class="q-input" type="text" placeholder="Resposta do aluno..." id="resp_${test.id}_${si}_${qi}" />
+        </div>`;
+      });
+    }
+    if (sec.type === 'text') {
+      html += `<div class="question-label" style="margin-bottom:8px;">${sec.prompt}</div>
+        <textarea class="q-input q-textarea" placeholder="Observações do professor..." id="resp_${test.id}_${si}_0"></textarea>`;
+    }
+    if (sec.type === 'math') {
+      html += `<div class="word-list">${sec.items.map(m => `<span class="word-tag">${m}</span>`).join('')}</div>`;
+    }
+    if (sec.type === 'problem') {
+      html += `<div class="comp-text">${sec.text}</div>
+        <textarea class="q-input q-textarea" placeholder="Resposta e observações..." id="resp_${test.id}_${si}_0" style="min-height:60px;"></textarea>`;
+    }
+    html += `</div></div>`;
+  });
+
+  // Custom questions for this test
+  const custom = customQuestions.filter(q => q.testIdx == test.id);
+  if (custom.length > 0) {
+    html += `<div class="section-block">
+      <div class="section-block-header"><span class="section-icon">✏️</span> Questões Personalizadas do Professor</div>
+      <div class="section-block-body">`;
+    custom.forEach((q, qi) => {
+      html += `<div class="question-item">
+        <div class="question-label">${q.section ? '<strong>' + q.section + '</strong> — ' : ''}${q.content}</div>`;
+      if (q.type === 'criteria' && q.opts) {
+        html += `<div class="radio-opts">`;
+        q.opts.forEach((opt, oi) => {
+          html += `<div class="radio-opt">
+            <input type="radio" name="custom_${q.id}" id="copt_${q.id}_${oi}" value="${opt}" />
+            <label for="copt_${q.id}_${oi}">${opt}</label>
+          </div>`;
+        });
+        html += `</div>`;
+      } else {
+        html += `<textarea class="q-input q-textarea" placeholder="Observações..." id="custom_resp_${q.id}" style="min-height:60px;"></textarea>`;
+      }
+      html += `</div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  // Criteria section
+  html += `<div class="section-block">
+    <div class="section-block-header"><span class="section-icon">📊</span> Critérios de Avaliação</div>
+    <div class="section-block-body">`;
+  CRITERIA.forEach(crit => {
+    html += `<div class="criteria-group">
+      <div class="criteria-label">${crit.label}</div>
+      <div class="radio-opts">`;
+    crit.opts.forEach((opt, oi) => {
+      html += `<div class="radio-opt">
+        <input type="radio" name="${crit.key}_${test.id}" id="${crit.key}_${test.id}_${oi}" value="${opt}" />
+        <label for="${crit.key}_${test.id}_${oi}">${opt}</label>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  html += `</div></div>`;
+
+  container.innerHTML = html;
+}
+
+// ── SCORE ──────────────────────────────────────────────────────────────────────
+
+function calcScore() {
+  const test = TESTS[currentTest];
+  const studentName = document.getElementById('student-name').value || 'Aluno não identificado';
+  const studentClass = document.getElementById('student-class').value || '—';
+  const studentDate = document.getElementById('student-date').value || new Date().toISOString().split('T')[0];
+
+  const scores = {};
+  let totalPts = 0, maxPts = 0;
+
+  CRITERIA.forEach(crit => {
+    const selected = document.querySelector(`input[name="${crit.key}_${test.id}"]:checked`);
+    const map = SCORE_MAP[crit.key];
+    if (selected && map) {
+      scores[crit.label] = { val: selected.value, pts: map[selected.value] || 0, max: Math.max(...Object.values(map)) };
+    } else {
+      scores[crit.label] = { val: '—', pts: 0, max: Math.max(...Object.values(map || { a: 3 })) };
+    }
+    totalPts += scores[crit.label].pts;
+    maxPts += scores[crit.label].max;
+  });
+
+  const pct = maxPts > 0 ? Math.round(totalPts / maxPts * 100) : 0;
+  let alertClass = pct >= 70 ? 'green' : pct >= 40 ? 'amber' : 'red';
+  let alertMsg = pct >= 70
+    ? '✅ Desempenho dentro do esperado para o ano. Monitoramento regular recomendado.'
+    : pct >= 40
+    ? '⚠️ Indicadores moderados de dificuldade. Recomenda-se acompanhamento pedagógico intensivo e observação continuada.'
+    : '🔴 Indicadores significativos de dificuldade. Encaminhar para avaliação psicopedagógica ou neuropsicológica.';
+
+  const barsHtml = Object.entries(scores).map(([name, s]) => {
+    const p = s.max > 0 ? Math.round(s.pts / s.max * 100) : 0;
+    const clr = p >= 70 ? '#2d7a4f' : p >= 40 ? '#b06a00' : '#c0392b';
+    return `<div class="score-bar-row">
+      <span class="score-bar-name">${name}</span>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:${p}%;background:${clr};"></div></div>
+      <span class="score-pct">${p}%</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('score-result').innerHTML = `
+    <div class="score-panel">
+      <div class="score-title">📊 Relatório de Avaliação — ${test.title}</div>
+      <div style="font-size:12px;opacity:0.6;margin-bottom:14px;">${studentName} · ${studentClass} · ${studentDate}</div>
+      <div class="score-grid">
+        <div class="score-item">
+          <div class="score-num" style="color:${pct>=70?'#7de8a8':pct>=40?'#ffd77a':'#ffb3ad'}">${pct}%</div>
+          <div class="score-nm">Score geral</div>
+        </div>
+        <div class="score-item">
+          <div class="score-num">${totalPts}</div>
+          <div class="score-nm">Pontos obtidos</div>
+        </div>
+        <div class="score-item">
+          <div class="score-num">${maxPts}</div>
+          <div class="score-nm">Pontos possíveis</div>
+        </div>
+      </div>
+      <div style="margin-bottom:12px;">${barsHtml}</div>
+      <div class="score-alert ${alertClass}">${alertMsg}</div>
+      <div style="font-size:11px;opacity:0.45;margin-top:12px;line-height:1.6;">
+        Instrumento de triagem — não constitui diagnóstico clínico. Deve ser interpretado por profissional habilitado em conjunto com outras informações.
+      </div>
+    </div>`;
+
+  // Save to results history
+  allResults.unshift({ test: test.title, student: studentName, class: studentClass, date: studentDate, pct, totalPts, maxPts, scores });
+  renderResultsList();
+  setTimeout(() => document.getElementById('score-result').scrollIntoView({ behavior: 'smooth' }), 100);
+}
+
+// ── RESULTS PAGE ──────────────────────────────────────────────────────────────
+
+function renderResultsList() {
+  const container = document.getElementById('results-list');
+  if (allResults.length === 0) {
+    container.innerHTML = '<div class="empty-state">Nenhum resultado calculado ainda.</div>';
+    return;
+  }
+  container.innerHTML = allResults.map((r, i) => {
+    const clr = r.pct >= 70 ? 'var(--green)' : r.pct >= 40 ? 'var(--amber)' : 'var(--red)';
+    const bgs = r.pct >= 70 ? 'var(--green-l)' : r.pct >= 40 ? 'var(--amber-l)' : 'var(--red-l)';
+    return `<div class="suggestion-card" style="border-left: 3px solid ${clr};">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-weight:600;font-size:14px;">${r.student}</span>
+        <span class="pill" style="background:${bgs};color:${clr};">${r.pct}%</span>
+      </div>
+      <div style="font-size:12px;color:var(--ink3);margin-bottom:8px;">${r.test} · ${r.class} · ${r.date}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        ${Object.entries(r.scores).map(([nm, s]) => {
+          const p = s.max > 0 ? Math.round(s.pts/s.max*100) : 0;
+          const c = p>=70?'var(--green-l)':p>=40?'var(--amber-l)':'var(--red-l)';
+          const tc = p>=70?'var(--green)':p>=40?'var(--amber)':'var(--red)';
+          return `<span class="pill" style="background:${c};color:${tc};">${nm}: ${p}%</span>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── TEACHER PANEL ────────────────────────────────────────────────────────────
+
+document.getElementById('new-q-type').addEventListener('change', function() {
+  document.getElementById('opts-group').style.display = this.value === 'criteria' ? 'block' : 'none';
+});
+
+function addCustomQuestion() {
+  const testIdx = parseInt(document.getElementById('new-test-dest').value);
+  const type = document.getElementById('new-q-type').value;
+  const section = document.getElementById('new-q-section').value.trim();
+  const content = document.getElementById('new-q-content').value.trim();
+  const optsRaw = document.getElementById('new-q-opts').value.trim();
+  const fb = document.getElementById('q-feedback');
+
+  if (!content) { fb.style.color = 'var(--red)'; fb.textContent = 'Escreva o enunciado.'; return; }
+  const opts = type === 'criteria' ? (optsRaw ? optsRaw.split('|').map(s => s.trim()).filter(Boolean) : []) : [];
+  if (type === 'criteria' && opts.length < 2) { fb.style.color = 'var(--red)'; fb.textContent = 'Adicione ao menos 2 opções separadas por |'; return; }
+
+  customQuestions.push({ id: Date.now(), testIdx, type, section, content, opts });
+  renderCustomList();
+  fb.style.color = 'var(--green)'; fb.textContent = 'Questão adicionada!';
+  document.getElementById('new-q-section').value = '';
+  document.getElementById('new-q-content').value = '';
+  document.getElementById('new-q-opts').value = '';
+  setTimeout(() => fb.textContent = '', 3000);
+}
+
+function deleteCustomQ(id) {
+  customQuestions = customQuestions.filter(q => q.id !== id);
+  renderCustomList();
+}
+
+function renderCustomList() {
+  const container = document.getElementById('custom-q-list');
+  if (customQuestions.length === 0) {
+    container.innerHTML = '<div class="empty-state">Nenhuma questão adicionada ainda.</div>';
+    return;
+  }
+  const testNames = TESTS.map(t => t.icon + ' ' + t.title);
+  container.innerHTML = customQuestions.map(q => `
+    <div class="custom-item">
+      <div class="ci-body">
+        <div class="ci-meta">${testNames[q.testIdx]} · ${q.type}${q.section ? ' · ' + q.section : ''}</div>
+        <div class="ci-text">${q.content}</div>
+        ${q.opts && q.opts.length ? `<div style="font-size:11px;color:var(--ink3);margin-top:3px;">${q.opts.join(' | ')}</div>` : ''}
+      </div>
+      <button class="ci-del" onclick="deleteCustomQ(${q.id})">✕</button>
+    </div>`).join('');
+}
+</script>
+</body>
+</html>
